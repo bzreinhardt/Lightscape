@@ -6,7 +6,7 @@ public class SphereGenerator : MonoBehaviour {
 	public float tubeRadius;
 	public bool randomize;
 	public GameObject target;
-	public GameObject center;
+	public GameObject gravtiyCenter;
 
 
 	// Use this for initialization
@@ -17,15 +17,16 @@ public class SphereGenerator : MonoBehaviour {
 			for (int i = 0; i < 1000; i++) {
 				float theta = Random.Range (0, 2 * Mathf.PI);
 				float phi = Random.Range (0, 2 * Mathf.PI);
+                Vector3 torusCenter = gameObject.transform.position;
 				GameObject star = Instantiate (target);
 				star.gameObject.transform.SetParent (torus.gameObject.transform);
-				float x = (bigRadius + tubeRadius * Mathf.Cos(theta)) * Mathf.Cos(phi);
-				float z = (bigRadius + tubeRadius * Mathf.Cos(theta)) * Mathf.Sin(phi);
-				float y = tubeRadius * Mathf.Sin (theta);
+				float x = (bigRadius + tubeRadius * Mathf.Cos(theta)) * Mathf.Cos(phi) + torusCenter.x;
+				float z = (bigRadius + tubeRadius * Mathf.Cos(theta)) * Mathf.Sin(phi) + torusCenter.y;
+				float y = tubeRadius * Mathf.Sin (theta) + torusCenter.z;
 				Vector3 r = new Vector3 (x, y, z);
 				star.gameObject.transform.position = r;
-				star.GetComponent<GravityObject> ().target = center.GetComponent<GravityObject>();
-				float speed = Mathf.Sqrt (GravityObject.G*center.GetComponent<Rigidbody>().mass/
+				star.GetComponent<GravityObject> ().target = gravtiyCenter.GetComponent<GravityObject>();
+				float speed = Mathf.Sqrt (GravityObject.G*gravtiyCenter.GetComponent<Rigidbody>().mass/
 					r.magnitude);
 				Vector3 direction = Vector3.Cross (new Vector3 (0, 1, 0), r);
 				direction.Normalize();
