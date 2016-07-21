@@ -6,15 +6,17 @@ public class SphereGenerator : MonoBehaviour {
 	public float tubeRadius;
 	public bool randomize;
 	public GameObject target;
+	public static GameObject sphereTarget;
 	public GameObject gravtiyCenter;
 
 
 	// Use this for initialization
 	void Start () {
+		sphereTarget = target;
 		//random torus
 		GameObject torus = new GameObject();
 		if (randomize) {
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 200; i++) {
 				float theta = Random.Range (0, 2 * Mathf.PI);
 				float phi = Random.Range (0, 2 * Mathf.PI);
                 Vector3 torusCenter = gameObject.transform.position;
@@ -30,7 +32,7 @@ public class SphereGenerator : MonoBehaviour {
 					r.magnitude);
 				Vector3 direction = Vector3.Cross (new Vector3 (0, 1, 0), r);
 				direction.Normalize();
-				star.GetComponent<Rigidbody> ().velocity = speed * direction;
+				//star.GetComponent<Rigidbody> ().velocity = speed * direction;
 			}
 		} else {
 		//non random torus
@@ -55,5 +57,9 @@ public class SphereGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public static GameObject Generate () {
+		return Instantiate (sphereTarget);
 	}
 }
